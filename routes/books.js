@@ -2,7 +2,7 @@
 const express = require("express");
 const router = express.Router();
 
-// Show the search page
+/// Show the search page
 router.get('/search', function (req, res) {
     res.render("search.ejs");
 });

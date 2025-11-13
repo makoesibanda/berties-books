@@ -7,13 +7,16 @@ router.get('/search', function (req, res) {
     res.render("search.ejs");
 });
 
-// Search the database for an exact book match
+/// Advanced search: partial match using LIKE
 router.get('/search-result', function (req, res, next) {
 
     const keyword = req.query.keyword;
-    const sqlquery = "SELECT * FROM books WHERE name = ?";
+    const sqlquery = "SELECT * FROM books WHERE name LIKE ?";
 
-    db.query(sqlquery, [keyword], (err, result) => {
+    // Add wildcards for partial matching
+    const searchValue = "%" + keyword + "%";
+
+    db.query(sqlquery, [searchValue], (err, result) => {
         if (err) return next(err);
 
         res.render("search-results.ejs", {
@@ -22,6 +25,7 @@ router.get('/search-result', function (req, res, next) {
         });
     });
 });
+
 
 // List all books
 router.get('/list', function (req, res, next) {
